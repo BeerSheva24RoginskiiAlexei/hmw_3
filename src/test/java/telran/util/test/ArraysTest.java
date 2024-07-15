@@ -143,7 +143,13 @@ void insertSortedTest3(){
 void isOneSwapTest(){
 
     int[] sortedArray = {1, 2, 3, 4, 5};
-    assertTrue(isOneSwap(sortedArray));
+    assertFalse(isOneSwap(sortedArray));
+
+    int [] swapPossible1 = {1, 2, 13, 4, 4, 20};
+    assertTrue(isOneSwap(swapPossible1 ));
+
+    int [] swapImpossible2 = {1, 2, 2, 3};
+    assertFalse(isOneSwap(swapImpossible2));
 
     int[] swapPossible = {1, 3, 2, 4, 5};
     assertTrue(isOneSwap(swapPossible));
@@ -152,7 +158,7 @@ void isOneSwapTest(){
     assertFalse(isOneSwap(swapImpossible));
 
     int[] emptyArray = {};
-    assertTrue(isOneSwap(emptyArray));
+    assertFalse(isOneSwap(emptyArray));
 }
 
 }

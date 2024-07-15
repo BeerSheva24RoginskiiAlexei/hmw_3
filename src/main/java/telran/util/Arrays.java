@@ -98,34 +98,31 @@ public static int[] insertSorted(int[] arSorted, int number) {
     return newArray;
 }
 
-public static boolean isOneSwap(int [] array) {
-
+public static boolean isOneSwap(int[] array) {
     int n = array.length;
     int first = -1, second = -1;
 
     for (int i = 0; i < n - 1; i++) {
         if (array[i] > array[i + 1]) {
-            if (first == -1) {
-                first = i;
-            } else if (second == -1) {
-                second = i +1;
-            } else {
-                return false;
-            }
+            first = i;
+            break;
         }
     }
-
-    if (first == -1){
-        return true;
+    
+    if (first == -1) {
+        return false;
     }
 
-    if (second == -1) {
-        second = first + 1;
+    for (int i = n - 1; i > first; i--) {
+        if (array[i] < array[first]) {
+            second = i;
+            break;
+        }
     }
 
     swap(array, first, second);
 
-    for (int i = 0; i < n - 1; i++) {
+    for (int i = first; i < n - 1; i++) {
         if (array[i] > array[i + 1]) {
             return false;
         }
