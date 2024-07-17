@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static telran.util.Arrays.*;
 
+import java.util.Comparator;
 import java.util.Random;
 
 public class ArraysTest {
@@ -161,8 +162,32 @@ void isOneSwapTest(){
     assertFalse(isOneSwap(emptyArray));
 }
 
+
+@Test 
+    void binarySearchAnyTypeTest() {
+        String [] strings = {"lmn", "cfta", "w", "aa"};
+        String [] expectedASCII = {"aa", "cfta", "lmn", "w"};
+        String [] expectedLenght = {"w", "aa", "lmn", "cfta"};
+        sort (strings, new ComparatorASCII());
+        assertArrayEquals(expectedASCII, strings);
+        sort (strings, new ComparatorLenght());
+        assertArrayEquals(expectedLenght, strings);
+    }
+
+        @Test
+    public void testBinarySearch() {
+        Comparator<String> comp = new ComparatorLenght();
+        String[] array = {"a", "bb", "ccc", "dddd", "eeeee"};
+        
+        assertEquals(0, binarySearch(array, "x", comp));  
+        assertEquals(1, binarySearch(array, "xx", comp));  
+        assertEquals(2, binarySearch(array, "xxx", comp)); 
+        assertEquals(3, binarySearch(array, "xxxx", comp)); 
+        assertEquals(4, binarySearch(array, "xxxxx", comp)); 
+        
+        assertEquals(-1, binarySearch(array, "", comp));  
+        assertEquals(-6, binarySearch(array, "xxxxxx", comp)); 
+    }
+
 }
-
-
-
 
