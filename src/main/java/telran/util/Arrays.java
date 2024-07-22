@@ -1,6 +1,7 @@
 package telran.util;
 
 import java.util.Comparator;
+import java.util.function.Predicate;
 
 public class Arrays {
 public static int search(int[] array, int key) {
@@ -133,27 +134,28 @@ public static boolean isOneSwap(int[] array) {
     return true;
 }
 
-    public static <T> void sort(T[] array, Comparator<T> comparator) {
-       int length = array.length;
-       boolean flSort = false;
-       do {
-            length--;
-            flSort = true;
-            for(int i = 0; i < length; i++) {
-                if(comparator.compare(array[i], array[i + 1]) > 0) {
-                    swap(array, i, i + 1);
-                    flSort = false;
-                }
-            }
-       }while(!flSort);
+public static <T> void sort (T[] array, Comparator<T> comparator) {
+    int length = array.length;
+    boolean flSorted = false;
+    do{
+        length--;
+        flSorted = true;
+        for (int i = 0; i < length; i++) {
+          if(comparator.compare(array[i], array[i + 1]) > 0) {
+             swap(array, i, i+1);
+             flSorted = false;
+        }
+    
+        }
+    } while(!flSorted);
+}
+
+private static <T> void swap(T[] array, int i, int j) {
+    T temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
     }
 
-    private static <T> void swap(T[] array, int i, int j) {
-        T tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp;
-
-    }
     public static <T> int binarySearch(T[] array, T key, Comparator<T> comp) {
         int left = 0;
         int right = array.length - 1;
@@ -168,6 +170,32 @@ public static boolean isOneSwap(int[] array) {
         }
         return left > right ? -(left + 1) : middle;
     }
-    
+
+    public static <T> T[] insert(T [] array, int index, T item) {
+        T[] newArray = java.util.Arrays.copyOf(array, array.length + 1);
+        System.arraycopy(array, index, newArray, index + 1, array.length - index);
+        newArray[index] = item;
+        return newArray;
+    }
+
+    public static <T> T[] find (T [] array, Predicate<T> predicate) {
+        T[] result = java.util.Arrays.copyOf(array, 0);
+
+        for (int i = 0; i < array.length; i++) {
+            if (predicate.test(array[i])) {
+                result = insert(result, result.length, array[i]);
+            }
+        }
+        return result;
+
+    }
+
+    public static <T> T[] removeIf(T[] array, Predicate<T> predicate) {
+        return find(array, predicate.negate());
+    }
+
+    public static <T extends Comparable<T>> int binarySearch1(T[] array, T key) {
+        return java.util.Arrays.binarySearch(array, key);
+    }
 
 }

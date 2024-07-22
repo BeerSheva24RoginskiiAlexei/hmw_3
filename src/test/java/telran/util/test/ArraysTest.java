@@ -11,6 +11,8 @@ import static telran.util.Arrays.*;
 
 import java.util.Comparator;
 import java.util.Random;
+import java.util.function.Predicate;
+
 
 public class ArraysTest {
     int[] numbers = { 10, 7, 12, -4, 13, 3, 14 };
@@ -188,6 +190,78 @@ void isOneSwapTest(){
         assertEquals(-1, binarySearch(array, "", comp));  
         assertEquals(-6, binarySearch(array, "xxxxxx", comp)); 
     }
+
+    @Test
+    void binarySearchNoComparator(){
+        String [] strings = {"aa", "cfta", "lmn", "w"};
+        Person prs1 = new Person(10, "Vasya");
+        Person prs2 = new Person(20, "Itay");
+        Person prs3 = new Person(30, "Sara");
+        Person [] persons ={ prs1, prs2, prs3};
+
+        assertEquals(1, java.util.Arrays.binarySearch(strings, "cfta"));
+        assertEquals(0, java.util.Arrays.binarySearch(persons, prs1));
+        assertEquals(-1, java.util.Arrays.binarySearch(persons, new Person(5, "Serg")));
+    }
+
+    @Test
+    void evenOddSorting() {
+        Integer [] array = {7, -8, 10, -100, 13, -10, 99};
+        Integer[] expected = {-100, -10, -8, 10, 99, 13, 7};
+
+        sort(array, new ComparatorEvenOddSort());
+
+        assertArrayEquals(expected, array);
+    }
+
+    @Test
+    void findTest(){
+        Integer [] array = {7, -8, 10, -100, 13, -10, 99};
+        Integer [] expected  = {7, 13, 99};
+
+        assertArrayEquals(expected, find(array,new OddNumbersPredicate()));
+    }
+
+    @Test
+    void removeIfTest() {
+        Integer[] array = {7, -8, 10, -100, 13, -10, 99};
+        Integer[] expected = {-8, 10, -100, -10}; 
+
+        assertArrayEquals(expected, removeIf(array, new OddNumbersPredicate()));
+    }
+
+    @Test
+    void testRemoveIfNoElementsToRemove() {
+        Integer[] array = {2, 4, 6, 8, 10};
+        Predicate<Integer> isOdd = new OddNumbersPredicate(); 
+        Integer[] expected = {2, 4, 6, 8, 10}; 
+
+        assertArrayEquals(expected, removeIf(array, isOdd));
+    }
+
+    @Test
+    void testRemoveIfEmptyArray() {
+        Integer[] array = {};
+        Predicate<Integer> isOdd = new OddNumbersPredicate(); 
+        Integer[] expected = {}; 
+
+        assertArrayEquals(expected, removeIf(array, isOdd));
+    }
+
+    @Test
+    void testBinarySearchWithoutComparator() {
+        Integer[] sortedArray = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        String[] sortedArray1 = {"apple", "banana", "cherry", "date", "fig", "grape"};
+
+        
+        assertEquals(0, java.util.Arrays.binarySearch(sortedArray, 1));  
+        assertEquals(0, java.util.Arrays.binarySearch(sortedArray1, "apple")); 
+
+        
+        assertEquals(-1, java.util.Arrays.binarySearch(sortedArray, 0));    
+        assertEquals(-7, java.util.Arrays.binarySearch(sortedArray1, "kiwi")); 
+    }
+
 
 }
 
