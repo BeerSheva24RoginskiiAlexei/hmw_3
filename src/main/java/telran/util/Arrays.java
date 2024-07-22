@@ -194,8 +194,9 @@ private static <T> void swap(T[] array, int i, int j) {
         return find(array, predicate.negate());
     }
 
-    public static <T extends Comparable<T>> int binarySearch1(T[] array, T key) {
-        return java.util.Arrays.binarySearch(array, key);
+    @SuppressWarnings("unchecked")
+    public static <T> int binarySearch(T[] arr, T item) {
+        return binarySearch(arr, item, (Comparator<T>) Comparator.naturalOrder());
     }
 
 }

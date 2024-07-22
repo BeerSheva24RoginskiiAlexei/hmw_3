@@ -6,19 +6,18 @@ public class ComparatorEvenOddSort implements Comparator<Integer> {
 
     @Override
     public int compare(Integer first, Integer second) {
-        if (isEven(first) && !isEven(second)) {
-            return -1;
-        } else if (!isEven(first) && isEven(second)) {
-            return 1;
-        } else if (isEven(first) && isEven(second)) {
-            return first.compareTo(second);
+        int res;
+        boolean isEvenFirst = first % 2 == 0;
+        boolean isEvenSecond = second % 2 == 0;
+
+        if (isEvenFirst == isEvenSecond) {
+            int cmp = Integer.compare(first, second);
+            res = isEvenFirst ? cmp : -cmp;
         } else {
-            return second.compareTo(first);
+            res = isEvenFirst ? -1 : 1;
         }
-    }
-    
-    private boolean isEven(int number) {
-        return number % 2 == 0;
+
+        return res;
     }
 
 }
