@@ -1,7 +1,10 @@
 package telran.util;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Arrays {
 public static int search(int[] array, int key) {
@@ -199,4 +202,41 @@ private static <T> void swap(T[] array, int i, int j) {
         return binarySearch(arr, item, (Comparator<T>) Comparator.naturalOrder());
     }
 
+    public static String matchesRules(char[] chars, CharacterRule[] mustBeRules, CharacterRule[] mustNotBeRule) {
+        List<String> errorMessages = checkRules(chars, mustBeRules);
+        errorMessages.addAll(checkRules(chars, mustNotBeRule));
+
+        return errorMessages.stream().collect(Collectors.joining(", "));
+    }
+
+    private static List<String> checkRules(char[] chars, CharacterRule[] rules) {
+        List<String> errorMessages = new ArrayList<>();
+
+        for (int i = 0; i < rules.length; i++) {
+            String errorMessage = checkRule(chars, rules[i]);
+            if (errorMessage != null) errorMessages.add(errorMessage);
+        }
+
+        return errorMessages;
+    }
+
+    private static String checkRule(char[] chars, CharacterRule rule) {
+        String errorMessage = null;
+        boolean ruleViolated = true;
+        int charIndex = 0;
+        while (ruleViolated && charIndex < chars.length) {
+            if (rule.predicate.test(chars[charIndex])) {
+                ruleViolated = false;
+            }
+            charIndex++;
+        }
+
+        if ((rule.flag && ruleViolated) || (!rule.flag && !ruleViolated)) {
+            errorMessage = rule.errorMessage;
+        }
+
+        return errorMessage;
+    }
+
+    
 }

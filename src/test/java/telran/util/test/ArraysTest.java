@@ -2,6 +2,8 @@ package telran.util.test;
 
 import org.junit.jupiter.api.Test;
 
+import telran.util.CharacterRule;
+
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -206,20 +208,27 @@ void isOneSwapTest(){
 
     @Test
     void evenOddSorting() {
-        Integer [] array = {7, -8, 10, -100, 13, -10, 99};
+        Integer[] array = {7, -8, 10, -100, 13, -10, 99};
         Integer[] expected = {-100, -10, -8, 10, 99, 13, 7};
-
-        sort(array, new ComparatorEvenOddSort());
-
+        // sort(array, new ComparatorEvenOddSort());
+        sort(array, (arg0, arg1) -> {
+            boolean isArg0Even = arg0 % 2 == 0;
+            boolean isArg1Even = arg1 % 2 == 0;
+            boolean noSwapFlag = (isArg0Even && !isArg1Even) ||
+            (isArg0Even && isArg1Even && arg0 <= arg1) ||
+            (!isArg0Even && !isArg1Even && arg0 >= arg1);
+            return noSwapFlag ? -1 : 1;
+        });
         assertArrayEquals(expected, array);
     }
+
 
     @Test
     void findTest(){
         Integer [] array = {7, -8, 10, -100, 13, -10, 99};
         Integer [] expected  = {7, 13, 99};
 
-        assertArrayEquals(expected, find(array,new OddNumbersPredicate()));
+        assertArrayEquals(expected, find(array, n -> n % 2 !=0));
     }
 
     @Test
@@ -263,5 +272,37 @@ void isOneSwapTest(){
     }
 
 
+    @Test
+    void matchesRulesTest() {    
+        CharacterRule[] rulesPositive = new CharacterRule[] {
+            new CharacterRule(true, Character::isUpperCase, "no uppercase letter"),
+            new CharacterRule(true, Character::isLowerCase, "no lowercase letter"),
+            new CharacterRule(true, Character::isDigit, "no digit found"),
+            new CharacterRule(true, c -> c == '.', "no dot symbol"),
+        };
+
+        CharacterRule[] negativeRules = new CharacterRule[] {
+            new CharacterRule(false, Character::isWhitespace, "space is not allowed"),
+        };
+
+        char[] testArray1 = new char[] {'a', 'B', '3', '.'};
+        char[] testArray2 = new char[] {'a', 'B', '3', '.', ' '};
+        char[] testArray3 = new char[] {'a', '3', '.'};
+        char[] testArray4 = new char[] {'B', '3', '.'};
+        char[] testArray5 = new char[] {'a', 'B', '.'};
+        char[] testArray6 = new char[] {'a', 'B', '3'};
+        char[] testArray7 = new char[] {' '};
+
+    assertEquals("", matchesRules(testArray1, rulesPositive, negativeRules));
+    assertEquals("space is not allowed", matchesRules(testArray2, rulesPositive, negativeRules));
+    assertEquals("no uppercase letter", matchesRules(testArray3, rulesPositive, negativeRules));
+    assertEquals("no lowercase letter", matchesRules(testArray4, rulesPositive, negativeRules));
+    assertEquals("no digit found", matchesRules(testArray5, rulesPositive, negativeRules));
+    assertEquals("no dot symbol", matchesRules(testArray6,rulesPositive, negativeRules));
+    assertEquals("no uppercase letter, no lowercase letter, no digit found, no dot symbol, space is not allowed", matchesRules(testArray7, rulesPositive, negativeRules));
+    }
 }
+
+
+
 
