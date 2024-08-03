@@ -23,6 +23,13 @@ public static int[] add(int[] array, int number) {
     return res;
 }
 
+
+public static <T> T[] add(T[] array, T element) {
+    T[] res = java.util.Arrays.copyOf(array, array.length + 1);
+    res[array.length] = element;
+    return res;
+}
+
 public static int[] insert(int[] array, int index, int number) {
     int[] newArray = java.util.Arrays.copyOf(array, array.length + 1);
     System.arraycopy(array, index, newArray, index + 1, array.length - index);
