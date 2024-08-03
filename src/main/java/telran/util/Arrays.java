@@ -16,14 +16,6 @@ public static int search(int[] array, int key) {
     return index == array.length ? -1 : index;
 }
 
-public static int[] add(int[] array, int number) {
-    int [] res = java.util.Arrays.copyOf(array, array.length + 1);
-    res[array.length] = number;
-
-    return res;
-}
-
-
 public static <T> T[] add(T[] array, T element) {
     T[] res = java.util.Arrays.copyOf(array, array.length + 1);
     res[array.length] = element;

@@ -29,12 +29,12 @@ public class ArraysTest {
         assertEquals(5,search(numbers, 3));
         assertEquals(-1,search(numbers, 100));
     }
-    @Test
-    void addTest(){
-    int newNumber = 100;
-    int[] expected = { 10, 7, 12, -4, 13, 3, 14, newNumber };
-    assertArrayEquals(expected, add(numbers, newNumber));
-    }
+    // @Test
+    // void addTest(){
+    // int newNumber = 100;
+    // int[] expected = { 10, 7, 12, -4, 13, 3, 14, newNumber };
+    // assertArrayEquals(expected, add(numbers, newNumber));
+    // }
 
     @Test
     void insertGoodIndexTest(){
